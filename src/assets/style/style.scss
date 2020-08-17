@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;700&display=swap');
+
+* {
+	font-family: 'Cabin', sans-serif !important;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1 0 auto;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.tv-show-container {
+	margin-top: 70px;
+	margin-bottom: 50px;
+}
+
+.bg-main {
+	background-color: #ff9123;
+	&.btn:hover {
+		background-color: #ff9e3d;
+	}
+}
+
+footer {
+	padding: 20px 10px;
+	text-align: center;
+	font-weight: 500;
+	color: #fff;
+}
