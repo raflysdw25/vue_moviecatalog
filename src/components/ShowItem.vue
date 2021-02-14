@@ -2,17 +2,23 @@
 	<!-- eslint-disable -->
 	<div class="show-item-container">
 		<b-row v-if="sortDisplay === 0">
-			<b-col lg="4" md="6" v-for="tvshow in tvshows" :key="tvshow.id">
+			<b-col lg="4" md="6" v-for="show in shows" :key="show.id">
 				<b-card
 					overlay
-					:img-src="imagePosterUrl + tvshow.poster_path"
-					:img-alt="tvshow.original_name"
-					:title="tvshow.name"
+					:img-src="
+						show.poster_path === null
+							? require('@/assets/image/poster_null.jpg')
+							: imagePosterUrl + show.poster_path
+					"
+					:img-alt="
+						show.original_name ? show.original_name : show.original_title
+					"
+					:title="show.name ? show.name : show.title"
 					class="mb-3"
 				>
 					<b-button
 						class="bg-main"
-						@click="show(tvshow.id)"
+						@click="detailShow(show.id)"
 						v-b-modal.detailModal
 					>
 						Lihat Detail
@@ -21,22 +27,21 @@
 			</b-col>
 		</b-row>
 		<b-row v-if="sortDisplay > 0">
-			<b-col
-				lg="4"
-				md="6"
-				v-for="index in sortDisplay"
-				:key="tvshows[index].id"
-			>
+			<b-col lg="4" md="6" v-for="index in sortDisplay" :key="shows[index].id">
 				<b-card
 					overlay
-					:img-src="imagePosterUrl + tvshows[index].poster_path"
-					:img-alt="tvshows[index].original_name"
-					:title="tvshows[index].name"
+					:img-src="
+						shows[index].poster_path === null
+							? require('@/assets/image/poster_null.jpg')
+							: imagePosterUrl + shows[index].poster_path
+					"
+					:img-alt="shows[index].original_name"
+					:title="shows[index].name"
 					class="mb-3"
 				>
 					<b-button
 						class="bg-main"
-						@click="show(tvshows[index].id)"
+						@click="detailShow(shows[index].id)"
 						v-b-modal.detailModal
 					>
 						Lihat Detail
@@ -49,6 +54,7 @@
 			v-if="showDetail"
 			hide-footer
 			size="xl"
+			hide-header
 			title="TV Show Detail"
 		>
 			<b-row id="detail-show">
@@ -60,47 +66,103 @@
 					</b-col>
 				</template>
 				<template v-else>
-					<b-col lg="5">
+					<b-col lg="12">
+						<b-img
+							:src="
+								showDetail.backdrop_path === null
+									? require('@/assets/image/backdrop_null.jpg')
+									: `${imageBackdropUrl}${showDetail.backdrop_path}`
+							"
+							fluid-grow
+							style="border-radius: 20px; "
+							:alt="`backdrop_${showDetail.name}`"
+						></b-img>
+					</b-col>
+					<b-col lg="5" class="mt-4">
 						<div class="title">
-							<p class="detail-title">{{ this.showDetail.name }}</p>
+							<p class="detail-title">
+								{{ showDetail.name ? showDetail.name : showDetail.title }}
+							</p>
 							<p class="detail-rilis">
-								{{ this.showDetail.first_air_date }}
+								{{
+									showDetail.first_air_date
+										? showDetail.first_air_date
+										: showDetail.release_date
+								}}
 							</p>
 						</div>
 						<div class="detail-genre mt-4">
 							<h4>Genre</h4>
 							<ol>
-								<li v-for="genre in this.showDetail.genres" :key="genre.id">
+								<li v-for="genre in showDetail.genres" :key="genre.id">
 									{{ genre.name }}
 								</li>
 							</ol>
 						</div>
 						<div class="detail-website mt-4">
 							<h4>Website</h4>
-							<a :href="this.showDetail.homepage">
-								{{ this.showDetail.homepage }}
+							<a :href="showDetail.homepage" target="_blank">
+								{{ showDetail.homepage }}
 							</a>
 						</div>
 					</b-col>
-					<b-col lg="7">
+					<b-col lg="7" class="mt-4">
 						<div class="detail-overview">
 							<h4>Overview</h4>
 							<p>
-								{{ this.showDetail.overview }}
+								{{ showDetail.overview }}
 							</p>
 						</div>
-						<h4>Networks</h4>
-						<b-row>
-							<b-col
-								cols="2"
-								v-for="network in this.showDetail.networks"
-								:key="network.id"
-							>
-								<figure>
-									<img :src="imageLogoUrl + network.logo_path" alt="" />
-								</figure>
-							</b-col>
-						</b-row>
+						<template v-if="showDetail.networks">
+							<h4>Networks</h4>
+							<b-row>
+								<b-col
+									cols="2"
+									v-for="network in showDetail.networks"
+									:key="network.id"
+								>
+									<figure
+										class="d-flex"
+										v-b-tooltip.hover.bottom="network.name"
+									>
+										<img
+											class="mx-auto"
+											:src="
+												network.logo_path === null
+													? require('@/assets/image/logo_null.png')
+													: imageLogoUrl + network.logo_path
+											"
+											:alt="`network_${network.name}`"
+										/>
+									</figure>
+								</b-col>
+							</b-row>
+						</template>
+						<template v-else-if="showDetail.production_companies">
+							<h4>Produce By</h4>
+							<b-row>
+								<b-col
+									cols="2"
+									v-for="company in showDetail.production_companies"
+									:key="company.id"
+								>
+									<figure
+										class="d-flex"
+										v-b-tooltip.hover.bottom="company.name"
+									>
+										<img
+											class="mx-auto"
+											:src="
+												company.logo_path === null
+													? require('@/assets/image/logo_null.png')
+													: imageLogoUrl + company.logo_path
+											"
+											:alt="`production_by_${company.name}`"
+										/>
+									</figure>
+								</b-col>
+							</b-row>
+						</template>
 					</b-col>
 				</template>
 			</b-row>
@@ -115,14 +177,11 @@
 
 	export default {
 		props: {
-			tvshows: Array,
+			shows: Array,
 			sortDisplay: Number,
 		},
 		data: function() {
 			return {
-				// imagePosterUrl: 'https://image.tmdb.org/t/p/w342/',
-				// imageBackdropUrl: 'https://image.tmdb.org/t/p/w780/',
-				// imageLogoUrl: 'https://image.tmdb.org/t/p/w45/',
 				showDetail: {},
 				loading: false,
 			}
@@ -139,18 +198,28 @@
 			},
 		},
 		methods: {
-			async show(id) {
+			async detailShow(showId) {
 				this.loading = true
-				await this.tvShowDetail(id)
+				if (this.$route.name === 'Movie') {
+					await this.movieDetail(showId)
+				} else if (this.$route.name === 'TvShow') {
+					await this.tvShowDetail(showId)
+				}
 				this.loading = false
 			},
 			async tvShowDetail(id) {
 				try {
 					const response = await api.showTvDetail(id)
-					console.log(response)
 					this.showDetail = response.data
 				} catch (error) {
-					console.log(error)
+					alert(error)
+				}
+			},
+			async movieDetail(id) {
+				try {
+					const response = await api.showMovieDetail(id)
+					this.showDetail = response.data
+				} catch (error) {
 					alert(error)
 				}
 			},

@@ -21,6 +21,11 @@
 						</router-link>
 					</li>
 					<li class="nav-item">
+						<router-link to="/movies" class="nav-link">
+							<b-icon icon="film"></b-icon> Movies
+						</router-link>
+					</li>
+					<li class="nav-item">
 						<router-link to="/quiz" class="nav-link">
 							<b-icon icon="question-circle-fill"></b-icon> Quiz
 						</router-link>

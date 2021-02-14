@@ -2,7 +2,7 @@
 	<!-- eslint-disable -->
 	<div class="tv-show-container">
 		<b-container>
-			<h1 class="mb-2">Popular TV Shows</h1>
+			<h1 class="mb-2">Popular Movies</h1>
 			<b-row class="mb-4">
 				<b-col>
 					<b-dropdown size="sm" text="Sort Display" variant="info">
@@ -18,7 +18,7 @@
 				</b-col>
 				<b-col cols="5">
 					<div class="pagination-center">
-						<ul v-if="tvshows.length > 0 && loading === false">
+						<ul v-if="movies.length > 0 && loading === false">
 							<li v-for="num in pageTotal" :key="num">
 								<a
 									style="cursor: pointer"
@@ -34,7 +34,7 @@
 			<div class="loading text-center" v-if="loading">
 				<img src="@/assets/image/icon/UploadLoader.gif" width="160" />
 			</div>
-			<ShowItem v-else :shows="tvshows" :sortDisplay="sortDisplay" />
+			<ShowItem v-else :shows="movies" :sortDisplay="sortDisplay" />
 		</b-container>
 	</div>
 	<!-- eslint-disable -->
@@ -51,13 +51,13 @@
 	import api from '@/api/api_catalog'
 
 	export default {
-		name: 'TvShow',
+		name: 'Movie',
 		components: {
 			ShowItem,
 		},
 		data() {
 			return {
-				tvshows: [],
+				movies: [],
 				displayShows: [0, 3, 5, 10],
 				sortDisplay: 0,
 				displayGrid: true,
@@ -68,14 +68,14 @@
 		},
 		async mounted() {
 			this.loading = true
-			await this.loadPopularTv()
+			await this.loadPopularMovie()
 			this.loading = false
 		},
 		methods: {
-			async loadPopularTv() {
+			async loadPopularMovie() {
 				try {
-					const response = await api.showTvPopular(this.pageNo)
-					this.tvshows = response.data.results
+					const response = await api.showMoviePopular(this.pageNo)
+					this.movies = response.data.results
 				} catch (error) {
 					alert(error)
 				}
@@ -83,7 +83,7 @@
 			jumpPage(page) {
 				if (this.pageNo !== page) {
 					this.pageNo = page
-					this.loadPopularTv()
+					this.loadPopularMovie()
 				}
 			},
 			countDisplay(count) {
