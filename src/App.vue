@@ -1,23 +1,15 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <Navigation />
-      <main>
-        <router-view />
-      </main>
-      <Footer />
-    </div>
-  </div>
+	<!-- eslint-disable -->
+	<div id="app">
+		<router-view />
+	</div>
 </template>
 
 <script>
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-export default {
-  components: {
-    Navigation,
-    Footer
-  }
-};
+	/* eslint-disable */
+
+	export default {
+		components: {},
+	}
 </script>
 <style lang="scss"></style>

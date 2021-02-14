@@ -51,6 +51,7 @@
 		</b-row>
 		<b-modal
 			id="detailModal"
+			ref="detailModal"
 			v-if="showDetail"
 			hide-footer
 			size="xl"
@@ -78,8 +79,8 @@
 							:alt="`backdrop_${showDetail.name}`"
 						></b-img>
 					</b-col>
-					<b-col lg="5" class="mt-4">
-						<div class="title">
+					<b-col lg="12" class="mt-4 d-flex">
+						<div class="title w-100">
 							<p class="detail-title">
 								{{ showDetail.name ? showDetail.name : showDetail.title }}
 							</p>
@@ -91,6 +92,15 @@
 								}}
 							</p>
 						</div>
+						<div class="w-auto"></div>
+						<div class="ratings w-100 text-right">
+							<p class="rating-poin">{{ showDetail.vote_average }} / 10</p>
+							<p class="rating-title">
+								Ratings
+							</p>
+						</div>
+					</b-col>
+					<b-col lg="5">
 						<div class="detail-genre mt-4">
 							<h4>Genre</h4>
 							<ol>
@@ -99,14 +109,14 @@
 								</li>
 							</ol>
 						</div>
-						<div class="detail-website mt-4">
+						<div class="detail-website text-wrap my-4">
 							<h4>Website</h4>
 							<a :href="showDetail.homepage" target="_blank">
 								{{ showDetail.homepage }}
 							</a>
 						</div>
 					</b-col>
-					<b-col lg="7" class="mt-4">
+					<b-col lg="7" class="my-4">
 						<div class="detail-overview">
 							<h4>Overview</h4>
 							<p>
@@ -117,7 +127,8 @@
 							<h4>Networks</h4>
 							<b-row>
 								<b-col
-									cols="2"
+									lg="2"
+									sm="3"
 									v-for="network in showDetail.networks"
 									:key="network.id"
 								>
@@ -142,7 +153,8 @@
 							<h4>Produce By</h4>
 							<b-row>
 								<b-col
-									cols="2"
+									lg="2"
+									sm="3"
 									v-for="company in showDetail.production_companies"
 									:key="company.id"
 								>
@@ -163,6 +175,12 @@
 								</b-col>
 							</b-row>
 						</template>
+						<button
+							@click="$refs['detailModal'].hide()"
+							class="btn-show-item d-lg-none d-sm-block"
+						>
+							X Close
+						</button>
 					</b-col>
 				</template>
 			</b-row>
@@ -260,13 +278,37 @@
 		.title {
 			.detail-title {
 				font-weight: bold;
-				font-size: 1.5625rem;
+				font-size: 1.75rem;
 				margin-bottom: 0;
 			}
 			.detail-rilis {
 				color: #b0afaf;
 				font-size: 0.9375rem;
 				margin-bottom: 0;
+			}
+		}
+		.ratings {
+			p {
+				margin-bottom: 0;
+			}
+			.rating-title {
+				font-size: 14px;
+				color: #b0afaf;
+			}
+			.rating-poin {
+				font-size: 1.75rem;
+				color: #000;
+			}
+		}
+		.btn-show-item {
+			margin-top: 24px;
+			padding: 10px 20px;
+			background: transparent;
+			border: 1px solid #e1e1e1;
+			color: red;
+			border-radius: 10px;
+			&:focus {
+				outline: none;
 			}
 		}
 	}

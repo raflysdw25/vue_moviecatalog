@@ -2,21 +2,24 @@
 	<!-- eslint-disable -->
 	<div class="navigation">
 		<b-navbar toggleable="lg" type="dark" class="bg-main">
-			<b-navbar-brand>
-				<img
-					src="@/assets/image/ic_cinema.svg"
-					alt="Our Show Icon"
-					style="width:56px;"
-				/>
-				OurShow
-			</b-navbar-brand>
+			<router-link to="/">
+				<b-navbar-brand>
+					<!-- <img
+						src="@/assets/image/ic_cinema.svg"
+						alt="Our Show Icon"
+						style="width:56px;"
+					/>
+					OurShow -->
+					<img src="@/assets/image/banner.png" alt="Banner App" />
+				</b-navbar-brand>
+			</router-link>
 
 			<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
 			<b-collapse id="nav-collapse" is-nav>
 				<b-navbar-nav class="ml-auto">
 					<li class="nav-item">
-						<router-link to="/" class="nav-link">
+						<router-link to="/tvshow" class="nav-link">
 							<b-icon icon="tv"></b-icon> TV Show
 						</router-link>
 					</li>
@@ -52,6 +55,9 @@
 		.navbar-brand {
 			font-size: 40px;
 			font-weight: bold;
+			img {
+				height: 80px;
+			}
 		}
 
 		.navbar-nav {

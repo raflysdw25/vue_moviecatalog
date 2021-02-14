@@ -1,41 +1,45 @@
 <template>
 	<!-- eslint-disable -->
 	<div class="tv-show-container">
-		<b-container>
-			<h1 class="mb-2">Popular TV Shows</h1>
-			<b-row class="mb-4">
-				<b-col>
-					<b-dropdown size="sm" text="Sort Display" variant="info">
-						<b-dropdown-item-button
-							v-for="display in displayShows"
-							:key="display"
-							@click="countDisplay(display)"
-							>{{
-								display === 0 ? 'All Shows' : display
-							}}</b-dropdown-item-button
-						>
-					</b-dropdown>
-				</b-col>
-				<b-col cols="5">
-					<div class="pagination-center">
-						<ul v-if="tvshows.length > 0 && loading === false">
-							<li v-for="num in pageTotal" :key="num">
-								<a
-									style="cursor: pointer"
-									v-on:click="jumpPage(num)"
-									:class="[num === pageNo ? 'active' : '']"
-									>{{ num }}
-								</a>
-							</li>
-						</ul>
-					</div>
-				</b-col>
-			</b-row>
-			<div class="loading text-center" v-if="loading">
-				<img src="@/assets/image/icon/UploadLoader.gif" width="160" />
-			</div>
-			<ShowItem v-else :shows="tvshows" :sortDisplay="sortDisplay" />
-		</b-container>
+		<Navigation />
+		<main>
+			<b-container>
+				<h1 class="mb-2">Popular TV Shows</h1>
+				<b-row class="mb-4">
+					<b-col>
+						<b-dropdown size="sm" text="Sort Display" variant="info">
+							<b-dropdown-item-button
+								v-for="display in displayShows"
+								:key="display"
+								@click="countDisplay(display)"
+								>{{
+									display === 0 ? 'All Shows' : display
+								}}</b-dropdown-item-button
+							>
+						</b-dropdown>
+					</b-col>
+					<b-col cols="5">
+						<div class="pagination-center">
+							<ul v-if="tvshows.length > 0 && loading === false">
+								<li v-for="num in pageTotal" :key="num">
+									<a
+										style="cursor: pointer"
+										v-on:click="jumpPage(num)"
+										:class="[num === pageNo ? 'active' : '']"
+										>{{ num }}
+									</a>
+								</li>
+							</ul>
+						</div>
+					</b-col>
+				</b-row>
+				<div class="loading text-center" v-if="loading">
+					<img src="@/assets/image/icon/UploadLoader.gif" width="160" />
+				</div>
+				<ShowItem v-else :shows="tvshows" :sortDisplay="sortDisplay" />
+			</b-container>
+		</main>
+		<Footer />
 	</div>
 	<!-- eslint-disable -->
 </template>
@@ -46,6 +50,8 @@
 
 	// Component
 	import ShowItem from '@/components/ShowItem.vue'
+	import Navigation from '@/components/Navigation'
+	import Footer from '@/components/Footer'
 
 	// API
 	import api from '@/api/api_catalog'
@@ -53,6 +59,8 @@
 	export default {
 		name: 'TvShow',
 		components: {
+			Navigation,
+			Footer,
 			ShowItem,
 		},
 		data() {

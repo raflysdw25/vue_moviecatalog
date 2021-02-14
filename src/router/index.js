@@ -4,12 +4,18 @@ import VueRouter from 'vue-router'
 import TvShow from '@/views/TvShow.vue'
 import Quiz from '@/views/Quiz.vue'
 import Movie from '@/views/Movie.vue'
+import Homepage from '@/views/Homepage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
 		path: '/',
+		name: 'Homepage',
+		component: Homepage,
+	},
+	{
+		path: '/tvshow',
 		name: 'TvShow',
 		component: TvShow,
 	},
